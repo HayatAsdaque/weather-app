@@ -24,6 +24,8 @@
                     <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
                     <p>{{ weather.description.title() }}</p>
                     <p><strong>{{ weather.temperature }}°C</strong></p>
+                    <p><strong>Wind Speed:</strong> {{ weather.wind }} m/s</p>
+                    <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
                 </div>
             {% endif %}
         {% endif %}
