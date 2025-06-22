@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🌦️ Weather Forecast</h1>
+        <form method="POST">
+            <input type="text" id="city" name="city" placeholder="Enter city name" autocomplete="off" required>
+            <ul id="suggestions"></ul>
+
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if weather %}
+            {% if weather.error %}
+                <div class="error">{{ weather.error }}</div>
+            {% else %}
+                <div class="weather-card">
+                    <h2>{{ weather.city }}</h2>
+                    <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+                    <p>{{ weather.description.title() }}</p>
+                    <p><strong>{{ weather.temperature }}°C</strong></p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+<script>
+const apiKey = "{{ api_key }}";  // Passed from Flask
+
+const input = document.getElementById('city');
+const suggestions = document.getElementById('suggestions');
+
+input.addEventListener('input', async () => {
+    const query = input.value;
+    if (query.length < 3) {
+        suggestions.innerHTML = '';
+        return;
+    }
+    const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`);
+    const cities = await res.json();
+
+    suggestions.innerHTML = '';
+    cities.forEach(city => {
+        const li = document.createElement('li');
+        li.textContent = `${city.name}, ${city.country}`;
+        li.addEventListener('click', () => {
+            input.value = city.name;
+            suggestions.innerHTML = '';
+        });
+        suggestions.appendChild(li);
+    });
+});
+</script>
+
+</body>
+</html>

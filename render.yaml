@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: weather-app
+    runtime: python
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: API_KEY
+        value: Ydd9f9d0db65226b3e92f77c1b8999ac2
