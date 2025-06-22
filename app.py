@@ -16,10 +16,15 @@ def index():
         if response.ok:
             data = response.json()
             weather = {
-                "city": city,
-                "temperature": data["main"]["temp"],
-                "description": data["weather"][0]["description"],
-                "icon": data["weather"][0]["icon"]
+                'city': city,
+                'temperature': round(data['main']['temp']),
+                'description': data['weather'][0]['description'].title(),
+                'icon': data['weather'][0]['icon'],
+                'country': data['sys']['country'],
+                'wind': data['wind']['speed'],            # New!
+                'humidity': data['main']['humidity'],     # New!
+                'sunrise': data['sys']['sunrise'],        # We’ll use this next
+                'sunset': data['sys']['sunset'],
             }
         else:
             weather = {"error": "City not found!"}
